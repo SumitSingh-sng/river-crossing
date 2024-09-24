@@ -1,10 +1,6 @@
 const elements = document.querySelectorAll(".element");
 let cap = 0;
-var cross=0;
-let human_on_right= 0;
-let zombie_on_right = 0;
-let human_on_left= 0;
-let zombie_on_left = 0;
+let cross=0;
 elements.forEach(eachElement => {
     eachElement.onclick = (event) => {
         if (hasAncestor(eachElement, "bank") && cap < 2) {
@@ -60,6 +56,7 @@ const move = document.querySelector(".move-part");
 fwd_btn.onclick = (e) =>{
     if(cap>0){
         cross++;
+        document.querySelector("#crossing").innerHTML = cross;
         move.classList.add('moved-element');
         move.classList.remove('original');
         check_right();
@@ -72,6 +69,7 @@ const bck_btn = document.querySelector("#bck_btn");
 bck_btn.onclick = (e) =>{
     if(cap>0){
         cross++;
+        document.querySelector("#crossing").innerHTML = cross;
         move.classList.remove('moved-element');
         move.classList.add('original');
         boat_left = document.querySelector(".original");
@@ -88,6 +86,7 @@ document.getElementById("crossing").innerHTML = cross;
 function checkCondition(humans,zombie){
     if(humans<zombie && humans!=0){
         alert("You lost");
+        location.reload();
     }
     else return false;
 }
@@ -103,8 +102,10 @@ const check_right = () =>{
     zombie_on_boat = zombie_on_boat ? zombie_on_boat.length : 0;
     let human_on_boat = boat_right.querySelectorAll(".human");
     human_on_boat = human_on_boat ? human_on_boat.length : 0;
-    console.log(human_on_right+human_on_boat , zombie_on_right+zombie_on_boat)
     checkCondition(human_on_right+human_on_boat , zombie_on_right+zombie_on_boat);
+    if(human_on_right+zombie_on_right == 6){
+        alert("Congratulation you have won!!")
+    }
 }
 
 const check_left = () =>{
@@ -120,4 +121,15 @@ const check_left = () =>{
     human_on_boat = human_on_boat ? human_on_boat.length : 0;
     console.log(human_on_left+human_on_boat , zombie_on_left+zombie_on_boat)
     checkCondition(human_on_left+human_on_boat , zombie_on_left+zombie_on_boat);
+}
+console.log(cross);
+
+
+const reset = document.querySelector("#reset");
+
+reset.onclick = (e) => {
+    let conf = confirm("Do you want to restart ??");
+    if(conf){
+        location.reload();
+    }
 }
